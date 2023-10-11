@@ -13,8 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.lisbeth_p1_ap2.ui.counter.CounterScreen
-import com.example.lisbeth_p1_ap2.ui.counter.CounterViewModel
+
 
 import com.example.lisbeth_p1_ap2.ui.theme.Lisbeth_p1_ap2Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,12 +29,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: CounterViewModel =hiltViewModel()
-                    val counter by viewModel.counter.collectAsState(0)
-                    CounterScreen(
-                        counter = counter,
-                        onIncrement = viewModel::increment
-                    )
+                    //val viewModel: CounterViewModel =hiltViewModel()
+                    //val counter by viewModel.counter.collectAsState(0)
+
 
                 }
             }

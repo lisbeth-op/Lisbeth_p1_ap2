@@ -14,21 +14,3 @@ private const val PREFERENCE_NAME="CounterStore"
 private const val COUNTER_KEY="CounterKey"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
 
-class CounterRepository @Inject constructor(
-    private val context: Context
-){
-    private object PreferencesKeys {
-        val COUNTER = intPreferencesKey(COUNTER_KEY)
-    }
-
-    val counter: Flow<Int> = context.dataStore.data.map { preferences ->
-        preferences[PreferencesKeys.COUNTER] ?: 0
-    }
-
-    suspend fun increment() {
-        context.dataStore.edit { preferences ->
-            val currentCounterValue = preferences[PreferencesKeys.COUNTER] ?: 0
-            preferences[PreferencesKeys.COUNTER] = currentCounterValue + 1
-        }
-    }
-}
