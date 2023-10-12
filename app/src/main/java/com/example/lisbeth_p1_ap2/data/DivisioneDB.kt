@@ -8,7 +8,7 @@ import com.example.lisbeth_p1_ap2.data.local.entities.DivisionEntity
 
 @Database(
     entities = [DivisionEntity::class],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 abstract class DivisioneDB : RoomDatabase() {

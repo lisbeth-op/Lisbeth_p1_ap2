@@ -4,12 +4,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Divisiones")
+
 class DivisionEntity (
     @PrimaryKey
-    val DivisionId: Int?= null,
-    var Nombres:String="",
-    var Dividendo:Int,
-    var Divisor:Int,
-    var Cociente: Int,
-    var Residuo: Int,
+    val dividirID: Int?= null,
+    var nombre:String="",
+    var dividendo:Int,
+    var divisor:Int,
+    var cociente: Int,
+    var residuo: Int,
 )
