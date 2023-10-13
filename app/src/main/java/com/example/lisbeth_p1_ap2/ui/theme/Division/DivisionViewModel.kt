@@ -64,9 +64,8 @@ class DivisionViewModel @Inject constructor(
 
     }
 
-
     private fun limpiar() {
-        Nombre = " Escriba su nombre"
+        Nombre = ""
         Dividendo = 0
         Divisor = 0
         Cociente = 0
@@ -78,22 +77,25 @@ class DivisionViewModel @Inject constructor(
             repository.delete(dividir)
         }
     }
-    fun validarCampos(){
+    fun validarCampos():Boolean{
+        if (Cociente!=0 && Dividendo!=0 && Divisor!=0)
+        {
+            cocienteError = Cociente != (Dividendo - Residuo) / Divisor
 
-        cocienteError = Cociente != Dividendo / Divisor
+            residuoError = Residuo != (Dividendo -Cociente)*Divisor
+
+            divisorError= (Dividendo-Residuo)/Cociente!=Divisor
+
+            dividendoError =  Cociente * Divisor + Residuo != Dividendo
+
+        }
+        return !cocienteError&&!residuoError&&!dividendoError&&!dividendoError
 
 
-        residuoError = Residuo != Dividendo % Divisor
-        residuoLabel = if (residuoError) "El residuo proporcionado no es correcto" else ""
-
-        divisorError=Divisor <=0 || (Dividendo-Residuo)/Cociente!=Divisor
-
-        dividendoError = Dividendo <= 0 || Cociente * Divisor + Residuo != Dividendo
-        dividendoLabel = if (dividendoError) "El dividendo proporcionado no es correcto" else ""
     }
 
     fun saveDivision() {
-        if (()) {
+        if (validarCampos()) {
             viewModelScope.launch {
                 val division = DivisionEntity(
 
