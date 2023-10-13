@@ -1,5 +1,6 @@
 package com.example.lisbeth_p1_ap2
 
+import DivisionScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //val viewModel: CounterViewModel =hiltViewModel()
+                    DivisionScreen()
                     //val counter by viewModel.counter.collectAsState(0)
 
 

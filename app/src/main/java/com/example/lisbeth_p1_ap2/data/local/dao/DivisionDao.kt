@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DivisionDao {
     @Upsert
-    suspend fun save(divisionEntity: DivisionDao)
+    suspend fun save(divisionEntity: DivisionEntity)
 
     @Query(
         """
@@ -23,7 +23,7 @@ interface DivisionDao {
     suspend fun find(id: Int): DivisionEntity?
 
     @Delete
-    suspend fun delete(divisionEntity: DivisionDao)
+    suspend fun delete(divisionEntity: DivisionEntity)
 
     @Query("SELECT * FROM Divisiones")
     fun getAll(): Flow<List<DivisionEntity>>

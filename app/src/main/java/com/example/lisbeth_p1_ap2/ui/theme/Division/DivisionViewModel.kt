@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lisbeth_p1_ap2.data.local.dao.DivisionDao
 import com.example.lisbeth_p1_ap2.data.local.entities.DivisionEntity
 import com.example.lisbeth_p1_ap2.data.repository.DivisionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,63 +48,62 @@ class DivisionViewModel @Inject constructor(
         nombreError = valor.isBlank() || valor.length < 3
     }
 
-    fun onDividendoChanged(valor: Int) {
-        Dividendo = valor
-        dividendoError = valor <= 0
-        dividendoLabel = if (dividendoError) "El dividendo debe ser mayor que cero" else ""
+
+    fun onDividendoChanged(valor: String) {
+        Dividendo = valor.toInt()
+        dividendoError = Dividendo <= 0 || Cociente * Divisor + Residuo != Dividendo
+        dividendoLabel = if (dividendoError) "El dividendo proporcionado no es correcto" else ""
     }
 
-    fun onDivisorChanged(valor: Int) {
-        Divisor = valor
-        divisorError = valor <= 0
-        divisorLabel = if (divisorError) "El divisor debe ser mayor que cero" else ""
+    fun onDivisorChanged(numero: String) {
+        Divisor = numero.toInt()
+        divisorError=Divisor <=0 || (Dividendo-Residuo)/Cociente!=Divisor
+
+
     }
 
-
-    fun onResiduoChanged(valor: Int) {
-        Residuo = valor
-        residuoError = valor != Dividendo % Divisor
-        residuoLabel = if (residuoError) "El residuo proporcionado no es correcto" else ""
-    }
-
-
-    fun onCocienteChanged(valor: Int) {
-        Cociente = valor
-        cocienteError = valor != Dividendo / Divisor
+    fun onCocienteChanged(valor: String) {
+        Cociente = valor.toInt()
+        cocienteError = Cociente != Dividendo / Divisor
         cocienteLabel = if (cocienteError) "El cociente proporcionado no es correcto" else ""
     }
 
-
+    fun onResiduoChanged(valor: String) {
+        Residuo = valor.toInt()
+        residuoError = Residuo != Dividendo % Divisor
+        residuoLabel = if (residuoError) "El residuo proporcionado no es correcto" else ""
+    }
 
     fun validarCampos(): Boolean {
         nombreError = Nombre.isBlank() || Nombre.length < 3
-    return nombreError}
-
-    private fun limpiar() {
-        Nombre=" Escriba su nombre"
-        Dividendo=0
-        Divisor=0
-        Cociente=0
-        Residuo=0
+        return !nombreError && !dividendoError && !divisorError && !cocienteError && !residuoError
     }
 
- fun saveDivision(){
-     if (validarCampos()){
-         viewModelScope.launch {
-             val division= DivisionEntity(
+    private fun limpiar() {
+        Nombre = " Escriba su nombre"
+        Dividendo = 0
+        Divisor = 0
+        Cociente = 0
+        Residuo = 0
+    }
+    fun delete(dividir: DivisionEntity){
+        viewModelScope.launch {
+            repository.delete(dividir)
+        }
+    }
+    fun saveDivision() {
+        if (validarCampos()) {
+            viewModelScope.launch {
+                val division = DivisionEntity(
 
-                 nombre=Nombre,
-                 divisor = Divisor,
-                 dividendo = Dividendo,
-                 cociente=Cociente,
-                 residuo = Residuo
-             )
-
-         }
-
-     }
- }
-
+                    nombre = Nombre,
+                    divisor = Divisor,
+                    dividendo = Dividendo,
+                    cociente = Cociente,
+                    residuo = Residuo
+                )
+                repository.save(division)
+            }
+        }
+    }
 }
-
-
