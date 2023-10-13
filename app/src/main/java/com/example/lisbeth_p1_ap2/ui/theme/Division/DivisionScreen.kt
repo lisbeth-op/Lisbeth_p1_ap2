@@ -3,7 +3,9 @@
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -39,14 +41,14 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
         mensajeError = "*Introduzca un nombre*",
         isError = divisionViewModel.nombreError
     )
-    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.height(80.dp)) {
         CampodeTexto(
             valor = divisionViewModel.Dividendo.toString(),
             alCambiarValor = { divisionViewModel.onDividendoChanged(it) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(5f),
             label = "Dividendo",
             opciones = KeyboardOptions(keyboardType = KeyboardType.Number),
-            mensajeError = "*El Dividendo no es correcto*",
+            mensajeError = "*El Dividendo es requerido*",
             isError = divisionViewModel.dividendoError
 
 
@@ -54,7 +56,7 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
         CampodeTexto(
             valor = divisionViewModel.Divisor.toString(),
             alCambiarValor = { divisionViewModel.onDivisorChanged(it) },
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(5f),
             label = "Divisor",
             opciones = KeyboardOptions(keyboardType = KeyboardType.Number),
             mensajeError = "*El Divisor no es correcto*",
@@ -64,7 +66,7 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
 
         )
     }
-    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.height(80.dp)){
         CampodeTexto(
             valor = divisionViewModel.Cociente.toString(),
             alCambiarValor = { divisionViewModel.onCocienteChanged(it) },

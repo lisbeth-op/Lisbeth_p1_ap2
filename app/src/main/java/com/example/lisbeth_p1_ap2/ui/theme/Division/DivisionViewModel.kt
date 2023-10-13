@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DivisionViewModel @Inject constructor(
-    private val repository: DivisionRepository):ViewModel() {
+    private val repository: DivisionRepository
+) : ViewModel() {
     var Nombre by mutableStateOf("")
     var Dividendo by mutableStateOf(0)
     var Divisor by mutableStateOf(0)
@@ -28,7 +29,7 @@ class DivisionViewModel @Inject constructor(
     var cocienteError by mutableStateOf(false)
     var residuoError by mutableStateOf(false)
 
-       private val _isMessageShown = MutableSharedFlow<Boolean>()
+    private val _isMessageShown = MutableSharedFlow<Boolean>()
     val isMessageShownFlow = _isMessageShown.asSharedFlow()
 
     fun setMessageShown() {
@@ -39,28 +40,38 @@ class DivisionViewModel @Inject constructor(
 
     fun onNombreChanged(valor: String) {
         Nombre = valor
-        nombreError = valor.isBlank() || valor.length < 3
+
     }
 
 
-    fun onDividendoChanged(valor: String) {
-        Dividendo = valor.toInt()
+    fun onDividendoChanged(numero: String) {
+        Dividendo = if (numero.isNullOrEmpty()) {
+            0
+        } else
+            numero.toInt()
 
     }
 
     fun onDivisorChanged(numero: String) {
-        Divisor = numero.toInt()
+        Divisor = if (numero.isNullOrEmpty()) {
+            0
+        } else numero.toInt()
 
 
     }
 
-    fun onCocienteChanged(valor: String) {
-        Cociente = valor.toInt()
+    fun onCocienteChanged(numero: String) {
+        Cociente = if (numero.isNullOrEmpty()) {
+            0
+        } else numero.toInt()
 
     }
 
-    fun onResiduoChanged(valor: String) {
-        Residuo = valor.toInt()
+    fun onResiduoChanged(numero: String) {
+        Residuo =if (numero.isNullOrEmpty()) {
+            0
+        } else numero.toInt()
+
 
     }
 
@@ -72,24 +83,25 @@ class DivisionViewModel @Inject constructor(
         Residuo = 0
     }
 
-    fun delete(dividir: DivisionEntity){
-        viewModelScope.launch {
+    fun delete(dividir: DivisionEntity) {
+  viewModelScope.launch {
             repository.delete(dividir)
         }
     }
-    fun validarCampos():Boolean{
-        if (Cociente!=0 && Dividendo!=0 && Divisor!=0)
-        {
+
+    fun validarCampos(): Boolean {
+        dividendoError = Dividendo==0
+        if (Cociente != 0 && Dividendo != 0 && Divisor != 0) {
             cocienteError = Cociente != (Dividendo - Residuo) / Divisor
 
-            residuoError = Residuo != (Dividendo -Cociente)*Divisor
+            residuoError = Residuo != Dividendo - (Cociente* Divisor)
 
-            divisorError= (Dividendo-Residuo)/Cociente!=Divisor
+            divisorError = (Dividendo - Residuo) / Cociente != Divisor
 
-            dividendoError =  Cociente * Divisor + Residuo != Dividendo
+
 
         }
-        return !cocienteError&&!residuoError&&!dividendoError&&!dividendoError
+        return !cocienteError && !residuoError && !dividendoError && !dividendoError && Nombre.isNotBlank() && Nombre.length > 3
 
 
     }

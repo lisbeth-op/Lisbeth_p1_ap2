@@ -23,7 +23,7 @@ fun CampodeTexto(
     mensajeError: String?=null,
     modifier: Modifier=Modifier
 ){
-    Column(Modifier.padding(bottom = if (isError){0.dp}else{10.dp})) {
+    Column(modifier.padding(bottom = if (isError){0.dp}else{10.dp})) {
         OutlinedTextField(
             value = valor,
             onValueChange =alCambiarValor,
