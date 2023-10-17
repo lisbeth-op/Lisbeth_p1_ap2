@@ -26,5 +26,5 @@ interface DivisionDao {
     suspend fun delete(divisionEntity: DivisionEntity)
 
     @Query("SELECT * FROM Divisiones")
-    fun getAll(): Flow<List<DivisionEntity>>
+    fun getAll(): List<DivisionEntity>
 }

@@ -9,9 +9,16 @@ import com.example.lisbeth_p1_ap2.data.local.entities.DivisionEntity
 import com.example.lisbeth_p1_ap2.data.repository.DivisionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class divisionListUIState(
+    val lista: List<DivisionEntity> = emptyList()
+)
 
 @HiltViewModel
 class DivisionViewModel @Inject constructor(
@@ -29,6 +36,8 @@ class DivisionViewModel @Inject constructor(
     var cocienteError by mutableStateOf(false)
     var residuoError by mutableStateOf(false)
 
+    private val _listUIState= MutableStateFlow(divisionListUIState())
+    val listUIState=_listUIState.asStateFlow()
     private val _isMessageShown = MutableSharedFlow<Boolean>()
     val isMessageShownFlow = _isMessageShown.asSharedFlow()
 
@@ -106,7 +115,7 @@ class DivisionViewModel @Inject constructor(
 
     }
 
-    fun saveDivision() {
+    fun saveDivision(): Boolean {
         if (validarCampos()) {
             viewModelScope.launch {
                 val division = DivisionEntity(
@@ -119,6 +128,18 @@ class DivisionViewModel @Inject constructor(
                 )
                 repository.save(division)
             }
+            return true
         }
+        return  false
+    }
+    fun actualizarResultado(){
+        viewModelScope.launch {
+            _listUIState.update {
+                it.copy(
+                    lista = repository.getAll()
+                )
+            }
+        }
+
     }
 }

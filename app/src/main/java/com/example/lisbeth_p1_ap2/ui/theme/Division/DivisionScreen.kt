@@ -1,5 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,10 +65,9 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
             isError = divisionViewModel.divisorError
 
 
-
         )
     }
-    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.height(80.dp)){
+    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.height(80.dp)) {
         CampodeTexto(
             valor = divisionViewModel.Cociente.toString(),
             alCambiarValor = { divisionViewModel.onCocienteChanged(it) },
@@ -88,12 +89,23 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
             isError = divisionViewModel.residuoError
 
 
-
         )
     }
-    Button(onClick = { divisionViewModel.saveDivision() }) {
+    val contexto = LocalContext.current
+    Button(onClick =
+    {
+        if (divisionViewModel.saveDivision()) {
+            Toast.makeText(contexto, "Guardado Correctamente", Toast.LENGTH_SHORT).show()
+        }
+    })
+    {
         Icon(imageVector = Icons.Default.Calculate, contentDescription = null)
         Text(text = "Guardar", Modifier.padding(start = 8.dp))
     }
+
+}
+@Composable
+fun HistorialScreen(divisionViewModel: DivisionViewModel = hiltViewModel())
+{
 
 }
