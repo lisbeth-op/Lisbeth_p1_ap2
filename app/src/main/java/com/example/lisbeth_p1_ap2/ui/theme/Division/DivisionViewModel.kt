@@ -127,7 +127,10 @@ class DivisionViewModel @Inject constructor(
                     residuo = Residuo
                 )
                 repository.save(division)
+
             }
+            actualizarResultado()
+            limpiar()
             return true
         }
         return  false
@@ -141,5 +144,8 @@ class DivisionViewModel @Inject constructor(
             }
         }
 
+    }
+    init {
+        actualizarResultado()
     }
 }
