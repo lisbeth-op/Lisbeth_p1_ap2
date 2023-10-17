@@ -36,8 +36,8 @@ class DivisionViewModel @Inject constructor(
     var cocienteError by mutableStateOf(false)
     var residuoError by mutableStateOf(false)
 
-    private val _listUIState= MutableStateFlow(divisionListUIState())
-    val listUIState=_listUIState.asStateFlow()
+    private val _listUIState = MutableStateFlow(divisionListUIState())
+    val listUIState = _listUIState.asStateFlow()
     private val _isMessageShown = MutableSharedFlow<Boolean>()
     val isMessageShownFlow = _isMessageShown.asSharedFlow()
 
@@ -77,7 +77,7 @@ class DivisionViewModel @Inject constructor(
     }
 
     fun onResiduoChanged(numero: String) {
-        Residuo =if (numero.isNullOrEmpty()) {
+        Residuo = if (numero.isNullOrEmpty()) {
             0
         } else numero.toInt()
 
@@ -93,20 +93,22 @@ class DivisionViewModel @Inject constructor(
     }
 
     fun delete(dividir: DivisionEntity) {
-  viewModelScope.launch {
-            repository.delete(dividir)
+        viewModelScope.launch {
+            repository.delete(dividir.dividirID ?: 0)
+            actualizarResultado()
         }
+
     }
 
+
     fun validarCampos(): Boolean {
-        dividendoError = Dividendo==0
+        dividendoError = Dividendo == 0
         if (Cociente != 0 && Dividendo != 0 && Divisor != 0) {
             cocienteError = Cociente != (Dividendo - Residuo) / Divisor
 
-            residuoError = Residuo != Dividendo - (Cociente* Divisor)
+            residuoError = Residuo != Dividendo - (Cociente * Divisor)
 
             divisorError = (Dividendo - Residuo) / Cociente != Divisor
-
 
 
         }
@@ -127,15 +129,17 @@ class DivisionViewModel @Inject constructor(
                     residuo = Residuo
                 )
                 repository.save(division)
+                actualizarResultado()
+                limpiar()
 
             }
-            actualizarResultado()
-            limpiar()
+
             return true
         }
-        return  false
+        return false
     }
-    fun actualizarResultado(){
+
+    fun actualizarResultado() {
         viewModelScope.launch {
             _listUIState.update {
                 it.copy(
@@ -145,6 +149,7 @@ class DivisionViewModel @Inject constructor(
         }
 
     }
+
     init {
         actualizarResultado()
     }

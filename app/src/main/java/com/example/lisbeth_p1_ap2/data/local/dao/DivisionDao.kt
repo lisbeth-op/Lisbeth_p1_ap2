@@ -22,8 +22,8 @@ interface DivisionDao {
     )
     suspend fun find(id: Int): DivisionEntity?
 
-    @Delete
-    suspend fun delete(divisionEntity: DivisionEntity)
+    @Query("delete from Divisiones where dividirID=:id")
+    suspend fun delete(id: Int)
 
     @Query("SELECT * FROM Divisiones")
     suspend fun getAll(): List<DivisionEntity>

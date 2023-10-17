@@ -133,7 +133,7 @@ fun HistorialScreen(divisionViewModel: DivisionViewModel = hiltViewModel()) {
         uiState.value.lista.forEach {
             item {
                 DivisionEntityRow(it) {
-
+                    divisionViewModel.delete(it)
                 }
             }
         }
