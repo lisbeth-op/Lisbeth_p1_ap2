@@ -2,13 +2,17 @@
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -19,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -65,9 +70,10 @@ fun RegistroDivion(divisionViewModel: DivisionViewModel = hiltViewModel()) {
             opciones = KeyboardOptions(keyboardType = KeyboardType.Number),
             mensajeError = "*El Dividendo es requerido*",
             isError = divisionViewModel.dividendoError
-
+                    //Spacer(Modifier.width(16.dp))
 
         )
+
         CampodeTexto(
             valor = divisionViewModel.Divisor.toString(),
             alCambiarValor = { divisionViewModel.onDivisorChanged(it) },
@@ -155,8 +161,16 @@ fun DivisionEntityRow(divisionEntity: DivisionEntity, onDelete: () -> Unit) {
             Text("Residuo: " +divisionEntity.residuo.toString())
 
         }
-        Button(onClick =onDelete) {
-                        Icon(imageVector = Icons.Default.Close, contentDescription =null, Modifier.background(Color.Red))
+        IconButton(onClick =onDelete )
+
+        {
+                        Icon(imageVector = Icons.Default.Close, contentDescription =null, tint = Color.Red,
+                            modifier = Modifier.
+                            fillMaxWidth()
+                            .aspectRatio(1f)
+                            .border(1.dp, Color.Red)
+                            .size(10.dp)
+                            .padding(10.dp))
 
         }
     }
